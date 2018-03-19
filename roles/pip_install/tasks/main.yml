@@ -1,0 +1,11 @@
+---
+- name: Install easy_install
+  apt:
+    name: python-setuptools
+    state: present
+    update_cache: yes
+
+- name: Install pip for python library management
+  easy_install:
+    name: pip
+    state: latest

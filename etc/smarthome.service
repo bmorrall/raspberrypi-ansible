@@ -1,0 +1,14 @@
+[Unit]
+Description=Smarthome
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/raspberrypi-smarthome
+ExecStart=/usr/bin/python /home/pi/raspberrypi-smarthome/smarthome-control.py
+Restart=on-failure
+User=pi
+
+[Install]
+WantedBy=multi-user.target

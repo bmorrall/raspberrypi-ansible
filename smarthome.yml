@@ -1,0 +1,38 @@
+- hosts: pi
+  become: true
+
+  roles:
+    - git_install
+    - pip_install
+
+  tasks:
+    - name: Install python packages
+      pip:
+        name: "{{item}}"
+      with_items:
+        - requests
+        - phue
+        - soco
+
+    - name: Install raspberrypi-smarthome from GitHub
+      git:
+        repo: https://github.com/bmorrall/raspberrypi-smarthome.git
+        dest: /home/pi/raspberrypi-smarthome
+        update: yes
+
+    - name: Add the Smarthome service
+      copy:
+        src: etc/smarthome.service
+        dest: /etc/systemd/system/smarthome.service
+        owner: root
+        group: root
+        mode: "u=rx,g=r,o=r"
+
+    - name: Start the Smarthome service
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        name: smarthome.service
+
+  vars:
+    ansible_user: "pi"
